@@ -1,11 +1,12 @@
 use rand::*;
 
+mod afunctions;
 mod models;
 mod neurals;
 
 use crate::neurals::network::NeuralNetwork;
 
-const TRAINING_LOOP: usize = 1_000;
+const TRAINING_LOOP: usize = 10_000;
 const DATASET_SIZE: usize = 10_000;
 
 fn generate_dataset(size: usize) -> Vec<(Vec<f64>, Vec<f64>)> {
@@ -15,6 +16,8 @@ fn generate_dataset(size: usize) -> Vec<(Vec<f64>, Vec<f64>)> {
         .map(|_| {
             let input: Vec<f64> = (0..10).map(|_| rng.gen_range(-1.0, 1.0)).collect();
             let target: Vec<f64> = (0..1).map(|_| rng.gen_range(-1.0, 1.0)).collect();
+            // let input: Vec<f64> = (0..10).map(|_| rng.gen_range(0.0, 1.0)).collect();
+            // let target: Vec<f64> = (0..1).map(|_| rng.gen_range(0.0, 1.0)).collect();
             (input, target)
         })
         .collect()

@@ -1,23 +1,30 @@
-use crate::models::perceptrons::Perceptron;
+use crate::{
+    afunctions::activation_functions::ActivationFunctionType, models::perceptrons::Perceptron,
+};
 
 pub struct NeuralNetwork {
     layers: Vec<Vec<Perceptron>>,
 }
 
 impl NeuralNetwork {
-    pub fn new(input_size: usize, hidden_sizes: &[usize], output_size: usize) -> NeuralNetwork {
+    pub fn new(
+        input_size: usize,
+        hidden_sizes: &[usize],
+        output_size: usize,
+        // af: ActivationFunctionType,
+    ) -> NeuralNetwork {
         let mut layers = Vec::new();
         let mut input_size = input_size;
         for &hidden_size in hidden_sizes {
             let layer = (0..hidden_size)
-                .map(|_| Perceptron::new(input_size))
+                .map(|_| Perceptron::new(input_size, ActivationFunctionType::Heaviside))
                 .collect();
             layers.push(layer);
             input_size = hidden_size;
         }
         layers.push(
             (0..output_size)
-                .map(|_| Perceptron::new(input_size))
+                .map(|_| Perceptron::new(input_size, ActivationFunctionType::Relu))
                 .collect(),
         );
         NeuralNetwork { layers }
