@@ -17,14 +17,14 @@ impl NeuralNetwork {
         let mut input_size = input_size;
         for &hidden_size in hidden_sizes {
             let layer = (0..hidden_size)
-                .map(|_| Perceptron::new(input_size, ActivationFunctionType::Heaviside))
+                .map(|_| Perceptron::new(input_size, ActivationFunctionType::Relu))
                 .collect();
             layers.push(layer);
             input_size = hidden_size;
         }
         layers.push(
             (0..output_size)
-                .map(|_| Perceptron::new(input_size, ActivationFunctionType::Relu))
+                .map(|_| Perceptron::new(input_size, ActivationFunctionType::Tanh))
                 .collect(),
         );
         NeuralNetwork { layers }
