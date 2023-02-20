@@ -1,4 +1,8 @@
-use std::io::stdin;
+// use std::io::stdin;
+use tracing::{info, Level};
+use tracing_subscriber;
+
+use indicatif::ProgressBar;
 
 use rand::*;
 
@@ -29,6 +33,8 @@ fn generate_dataset(size: usize) -> Vec<(Vec<f64>, Vec<f64>)> {
 }
 
 fn main() {
+    tracing_subscriber::fmt::init();
+
     let mut nn = NeuralNetwork::new(6, &[100], 1);
     let mut rng = thread_rng();
     // let dataset_gen = generate_dataset(DATASET_SIZE);
@@ -43,9 +49,19 @@ fn main() {
         (vec![-1.0, -1.0, -1.0], vec![-1.0]),
     ];
 
+    info!(
+        "Starting to train the neural network with : {} iterations",
+        TRAINING_LOOP
+    );
+
+    let pb = ProgressBar::new(TRAINING_LOOP as u64);
+
     for _ in 0..TRAINING_LOOP {
         // let (inputs, targets) = rng.choose(&dataset).unwrap();
         // println!("inputs: {:#?} - targets: {:#?}", inputs, targets);
+
+        pb.inc(1);
+
         for i in dataset.iter_mut() {
             let (inputs, targets) = i;
 
@@ -54,14 +70,8 @@ fn main() {
         // dataset.into_iter().map(|(i, t)| {
         // });
     }
-
-    // let mut user_input = String::new();
-
-    // let stdin = stdin();
-    // println!("Please enter the data set you want to be analysed...");
-    // stdin.read_line(&mut user_input).unwrap();
-
-    // println!("user input: {}", user_input);
+    pb.finish();
+    info!("Training end");
 
     let predictions = nn.predict(&[-1.0, -1.0, 1.0]);
     println!("Prediction: {:?}", predictions);
