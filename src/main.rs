@@ -35,7 +35,7 @@ fn generate_dataset(size: usize) -> Vec<(Vec<f64>, Vec<f64>)> {
 fn main() {
     tracing_subscriber::fmt::init();
 
-    let mut nn = NeuralNetwork::new(6, &[100], 1);
+    let mut nn = NeuralNetwork::new(3, &[100], 1);
     let mut rng = thread_rng();
     // let dataset_gen = generate_dataset(DATASET_SIZE);
     let mut dataset = vec![
